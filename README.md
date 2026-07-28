@@ -1,8 +1,8 @@
 # agents-radar
 
-English | [中文](./README.zh.md)
+English | [العربية](./README.ar.md)
 
-A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI ecosystem signals from 10 data sources, then publishes bilingual (Chinese + English) daily digests as GitHub Issues and committed Markdown files. Weekly and monthly rollup reports are also generated automatically.
+A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI ecosystem signals from 10 data sources, then publishes bilingual (Arabic + English) daily digests as GitHub Issues and committed Markdown files. Weekly and monthly rollup reports are also generated automatically.
 
 ### Data Sources
 

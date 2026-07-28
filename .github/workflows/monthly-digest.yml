@@ -34,8 +34,8 @@ jobs:
       - name: Run monthly rollup
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LLM_PROVIDER: deepseek
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          LLM_PROVIDER: nvidia-nim
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY }}
           DIGEST_REPO: ${{ github.repository }}
         run: pnpm monthly
 

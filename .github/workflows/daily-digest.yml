@@ -36,8 +36,9 @@ jobs:
       - name: Run daily digest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LLM_PROVIDER: deepseek
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          LLM_PROVIDER: nvidia-nim
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY }}
+          NVIDIA_NIM_MODEL: ${{ secrets.NVIDIA_NIM_MODEL || 'deepseek-ai/deepseek-v4-pro' }}
           PRODUCTHUNT_TOKEN: ${{ secrets.PRODUCTHUNT_TOKEN }}
           DIGEST_REPO: ${{ github.repository }}
         run: pnpm start
@@ -72,13 +73,13 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '@agents_radar' }}
-          PAGES_URL: https://duanyytop.github.io/agents-radar
+          PAGES_URL: https://ahmedhabibo.github.io/agents-radar
         run: pnpm notify
 
       - name: Send Feishu notification
         env:
           FEISHU_WEBHOOK_URLS: ${{ secrets.FEISHU_WEBHOOK_URLS }}
-          PAGES_URL: https://duanyytop.github.io/agents-radar
+          PAGES_URL: https://ahmedhabibo.github.io/agents-radar
         run: pnpm notify:feishu
 
       - name: Close stale issues

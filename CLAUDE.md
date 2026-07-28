@@ -2,7 +2,7 @@
 
 ## Project overview
 
-agents-radar is a daily digest generator for the AI open-source ecosystem. A GitHub Actions cron job runs at 00:00 UTC (08:00 CST) and produces bilingual (Chinese + English) reports, published as GitHub Issues and committed Markdown files.
+agents-radar is a daily digest generator for the AI open-source ecosystem. A GitHub Actions cron job runs at 00:00 UTC (08:00 CST) and produces bilingual (Arabic + English) reports, published as GitHub Issues and committed Markdown files.
 
 ## Commands
 
@@ -23,10 +23,15 @@ export GITHUB_TOKEN=ghp_xxxxx
 export DIGEST_REPO=owner/repo   # omit to skip GitHub issue creation
 
 # LLM provider (default: anthropic)
-export LLM_PROVIDER=anthropic   # anthropic | openai | github-copilot | openrouter | deepseek
+export LLM_PROVIDER=nvidia-nim  # nvidia-nim | anthropic | openai | github-copilot | openrouter | deepseek
 
 # Anthropic (default)
-export ANTHROPIC_API_KEY=sk-ant-xxxxx
+# NVIDIA NIM (default)
+export NVIDIA_NIM_API_KEY=nvapi-xxxxx
+export NVIDIA_NIM_MODEL=deepseek-ai/deepseek-v4-pro
+
+# Anthropic (alternative)
+# export ANTHROPIC_API_KEY=sk-ant-xxxxx
 
 # OpenAI
 # export OPENAI_API_KEY=sk-xxxxx
