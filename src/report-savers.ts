@@ -44,7 +44,7 @@ export async function saveWebReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): Promise<void> {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
@@ -91,7 +91,7 @@ export async function saveWebReport(
     console.log(`  [web/${lang}] No new content detected, skipping report.`);
   }
 
-  if (lang === "zh") {
+  if (lang === "ar") {
     saveWebState(webState);
     console.log("  [web] State saved.");
   }
@@ -108,7 +108,7 @@ export async function saveTrendingReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): Promise<void> {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
   if (!hasData) {
@@ -143,7 +143,7 @@ export async function saveHnReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): Promise<void> {
   if (!hnData.fetchSuccess) {
     console.log(`  [hn/${lang}] No data available, skipping report.`);
@@ -190,7 +190,7 @@ export async function savePhReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): Promise<void> {
   if (!phData.fetchSuccess) {
     console.log(`  [ph/${lang}] No data available, skipping report.`);
@@ -237,7 +237,7 @@ export async function saveArxivReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): Promise<void> {
   if (!arxivData.fetchSuccess) {
     console.log(`  [arxiv/${lang}] No data available, skipping report.`);
@@ -284,7 +284,7 @@ export async function saveHfReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): Promise<void> {
   if (!hfData.fetchSuccess) {
     console.log(`  [hf/${lang}] No data available, skipping report.`);
@@ -332,7 +332,7 @@ export async function saveCommunityReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): Promise<void> {
   const hasData = devtoData.fetchSuccess || lobstersData.fetchSuccess;
   if (!hasData) {

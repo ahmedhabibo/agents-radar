@@ -14,7 +14,7 @@ import type { HfData } from "./hf.ts";
 import type { DevtoData } from "./devto.ts";
 import type { LobstersData } from "./lobsters.ts";
 import type { Lang } from "./i18n.ts";
-export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: Lang = "zh"): string {
+export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: Lang = "ar"): string {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
       ? data.trendingRepos
@@ -30,7 +30,7 @@ export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: L
           .join("\n")
       : lang === "en"
         ? "(Unable to fetch today's GitHub Trending list)"
-        : "（未能抓取今日 GitHub Trending 榜单）";
+        : "(تعذّر جلب قائمة GitHub Trending لهذا اليوم)";
 
   const searchSection =
     data.searchRepos.length > 0
@@ -46,7 +46,7 @@ export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: L
           .join("\n")
       : lang === "en"
         ? "(No search results)"
-        : "（无搜索结果）";
+        : "(لا توجد نتائج بحث)";
 
   if (lang === "en") {
     return `You are a technical analyst focused on the AI open-source ecosystem. The following is ${dateStr} GitHub AI-related trending repository data. Please filter for AI relevance, categorize, and analyze trends.
@@ -104,62 +104,62 @@ Style: English, professional and concise, must include GitHub links for every pr
 `;
   }
 
-  return `你是一位专注于 AI 开源生态的技术分析师。以下是 ${dateStr} 的 GitHub AI 相关热门仓库数据，请进行 AI 相关性筛选、分类和趋势分析。
+  return `أنت محلّل تقني متخصّص في منظومة الذكاء الاصطناعي مفتوحة المصدر. فيما يلي بيانات ${dateStr} لأشهر مستودعات GitHub المرتبطة بالذكاء الاصطناعي، يُرجى إجراء تصفية للصلة بالذكاء الاصطناعي والتصنيف وتحليل الاتجاهات.
 
-## 数据说明
-- **Trending 榜单**（github.com/trending，今日 stars 数最可信）：今日实时热榜，含今日新增 stars
-- **主题搜索**（GitHub Search API，topic 标签）：7天内活跃的 AI 相关项目，按主题分类
+## توضيح البيانات
+- **قائمة Trending** (github.com/trending، عدد stars اليوم هو الأكثر موثوقية): قائمة ساخنة لحظية لليوم، تتضمّن الـ stars المُضافة اليوم
+- **البحث الموضوعي** (GitHub Search API، وسوم topic): مشاريع الذكاء الاصطناعي النشطة خلال 7 أيام، مُجمَّعة حسب الموضوع
 
 ---
 
-## GitHub 今日 Trending 榜单（共 ${data.trendingRepos.length} 个仓库）
+## GitHub Trending لهذا اليوم (إجمالي ${data.trendingRepos.length} مستودعاً)
 ${trendingSection}
 
 ---
 
-## AI 主题搜索结果（共 ${data.searchRepos.length} 个仓库，已去重）
+## نتائج البحث الموضوعي للذكاء الاصطناعي (إجمالي ${data.searchRepos.length} مستودعاً، بعد إزالة التكرار)
 ${searchSection}
 
 ---
 
-请生成一份结构清晰的《AI 开源趋势日报》，要求：
+يُرجى إنشاء تقرير يومي لاتجاهات الذكاء الاصطناعي مفتوحة المصدر، بالمواصفات التالية:
 
-**第一步（过滤）**：从以上数据中筛选出与 AI/ML 明确相关的项目（排除与 AI 无关的通用工具、前端框架、游戏等），对于 Trending 榜单中的非 AI 项目直接略去。
+**الخطوة الأولى (التصفية)**: من البيانات أعلاه، اختَر المشاريع المرتبطة بوضوح بالذكاء الاصطناعي/تعلم الآلة (استبعِد الأدوات العامة غير ذات الصلة، وأُطر العمل الأمامية، والألعاب، إلخ)، وتجاوز المستودعات غير المرتبطة بالذكاء الاصطناعي في قائمة Trending.
 
-**第二步（分类）**：将筛选后的项目按以下维度分类（一个项目可归入多类，优先归入最主要类别）：
-- 🔧 AI 基础工具（框架、SDK、推理引擎、开发工具、CLI）
-- 🤖 AI 智能体/工作流（Agent 框架、自动化、多智能体）
-- 📦 AI 应用（具体应用产品、垂直场景解决方案）
-- 🧠 大模型/训练（模型权重、训练框架、微调工具）
-- 🔍 RAG/知识库（向量数据库、检索增强、知识管理）
+**الخطوة الثانية (التصنيف)**: صنّف المشاريع المُصفّاة وفق الأبعاد التالية (يمكن أن ينتمي المشروع إلى أكثر من فئة، مع إعطاء الأولوية للفئة الرئيسية):
+- 🔧 البنية التحتية للذكاء الاصطناعي (الأُطر، SDK، محرّكات الاستدلال، أدوات التطوير، CLI)
+- 🤖 وكلاء الذكاء الاصطناعي/تدفقات العمل (أُطر Agent، الأتمتة، أنظمة متعددة الوكلاء)
+- 📦 تطبيقات الذكاء الاصطناعي (تطبيقات محددة، حلول قطاعية)
+- 🧠 النماذج اللغوية الكبيرة/التدريب (أوزان النماذج، أُطر التدريب، أدوات الضبط الدقيق)
+- 🔍 RAG/قاعدة المعرفة (قواعد البيانات المتجهة، الاسترجاع المعزّز، إدارة المعرفة)
 
-**第三步（输出报告）**，包含以下部分：
+**الخطوة الثالثة (إخراج التقرير)**، مع تضمين الأقسام التالية:
 
-1. **今日速览** — 3~5 句话概括今日 AI 开源领域最值得关注的动向
+1. **أبرز ما في اليوم** — 3 إلى 5 جُمل تُلخّص أبرز التطورات في مجال الذكاء الاصطناعي مفتوحة المصدر اليوم
 
-2. **各维度热门项目** — 每个维度用 **Markdown 表格**呈现，列固定为：
+2. **أبرز المشاريع حسب كل فئة** — لكل فئة، استخدم **جدول Markdown** بالأعمدة الثابتة التالية:
 
-   | 项目 | 语言 | Stars（总量 / 今日） | 简要说明 |
+   | المشروع | اللغة | Stars (الإجمالي / اليوم) | وصف موجز |
    | :--- | :--- | ---: | :--- |
 
-   - **项目**：仓库名，做成指向其 GitHub 链接的 Markdown 链接
-   - **语言**：主要语言（未知则留空）
-   - **Stars**：总 star 数，有今日新增则在括号中标注（如 "86,392（+1,851）"）；数字照抄输入，不要重算
-   - **简要说明**：2 句话——项目是什么、今天为什么值得关注，点出关键数据或增长信号
-   - 每个维度列 3~8 个项目；某维度下若无项目则整张表省略
+   - **المشروع**: اسم المستودع كرابط Markdown يشير إلى رابط GitHub الخاص به
+   - **اللغة**: اللغة الأساسية (اتركه فارغاً إذا غير معروف)
+   - **Stars**: إجمالي عدد الـ stars، مع توضيح الإضافة اليومية بين قوسين عند توفّرها (مثل "86,392 (+1,851)")؛ انسخ الأرقام من المدخلات كما هي، ولا تُعيد حسابها
+   - **الوصف الموجز**: جملتان — ما هو المشروع ولماذا يستحق المتابعة اليوم، مع الإشارة إلى أي نقطة بيانات بارزة أو إشارة زخم
+   - اذكُر 3 إلى 8 مشاريع لكل فئة؛ احذف جدول الفئة بالكامل إذا لم يندرج أي مشروع تحتها
 
-3. **趋势信号分析** — 200~300 字，从今日热榜中提炼：
-   - 哪类 AI 工具正在获得社区爆发性关注？
-   - 有无新兴技术栈或方向首次登榜？
-   - 与近期大模型发布/行业事件的关联
+3. **تحليل إشارات الاتجاهات** — 200 إلى 300 كلمة، استخلصها من القائمة الساخنة اليوم:
+   - أي نوع من أدوات الذكاء الاصطناعي يحظى باهتمام مجتمعي متفجّر؟
+   - هل تظهر أي حِزَم تقنية أو اتجاهات جديدة لأول مرة؟
+   - الصلة بإصدارات النماذج اللغوية الكبيرة الأخيرة / الأحداث الصناعية
 
-4. **社区关注热点** — 以 bullet 形式列出 3~5 个值得开发者重点关注的具体项目或方向，给出简短理由
+4. **بؤرة الاهتمام المجتمعي** — قائمة نقطية تضم 3 إلى 5 مشاريع أو اتجاهات محددة تستحق اهتمام المطورين، مع إيجاز الأسباب
 
-语言要求：中文，专业简洁，每个项目必须附 GitHub 链接。
+اللغة: العربية، احترافية وموجزة، يجب تضمين روابط GitHub لكل مشروع.
 `;
 }
 
-export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string, lang: Lang = "zh"): string {
+export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string, lang: Lang = "ar"): string {
   const isAnyFirstRun = results.some((r) => r.isFirstRun);
 
   const siteSections = results
@@ -170,23 +170,23 @@ export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string,
             ? `First full crawl (sitemap total ${totalDiscovered} URLs, showing latest ${newItems.length} articles)`
             : `Incremental update, ${newItems.length} new articles today`
           : isFirstRun
-            ? `首次全量抓取（sitemap 共 ${totalDiscovered} 条 URL，以下为最新 ${newItems.length} 篇正文内容）`
-            : `今日增量更新，共 ${newItems.length} 篇新内容`;
+            ? `أول زحف كامل للجدول (sitemap إجمالي ${totalDiscovered} رابط، عرض أحدث ${newItems.length} مقالة)`
+            : `تحديث تزايدي اليوم، إجمالي ${newItems.length} محتوى جديد`;
 
       if (newItems.length === 0) {
         const noContent =
-          lang === "en" ? `(${mode}, no content to analyze.)` : `（${mode}，暂无可供分析的内容。）`;
+          lang === "en" ? `(${mode}, no content to analyze.)` : `(${mode}، لا يوجد محتوى لتحليله.)`;
         return `## ${siteName}\n\n${noContent}`;
       }
 
-      const categoryLabel = lang === "en" ? "Category" : "分类";
-      const dateLabel = lang === "en" ? "Published/Updated" : "发布/更新";
-      const unknownDate = lang === "en" ? "unknown" : "未知";
-      const excerptLabel = lang === "en" ? "Excerpt" : "内容节选";
+      const categoryLabel = lang === "en" ? "Category" : "الفئة";
+      const dateLabel = lang === "en" ? "Published/Updated" : "تاريخ النشر/التحديث";
+      const unknownDate = lang === "en" ? "unknown" : "غير معروف";
+      const excerptLabel = lang === "en" ? "Excerpt" : "مقتطف";
       const metadataOnlyNote =
         lang === "en"
           ? "(metadata-only: title derived from URL slug, may be inaccurate; no article text available)"
-          : "（仅元数据：标题由 URL 路径推断，可能不准确；无法获取正文内容）";
+          : "(بيانات وصفية فقط: العنوان مُستنتَج من مسار URL، وقد يكون غير دقيق؛ لا يتوفر نص المقال)";
       const itemsText = newItems
         .map((item) => {
           const lines = [
@@ -202,8 +202,8 @@ export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string,
         })
         .join("\n\n");
 
-      const lp = lang === "en" ? "(" : "（";
-      const rp = lang === "en" ? ")" : "）";
+      const lp = lang === "en" ? "(" : "(";
+      const rp = lang === "en" ? ")" : ")";
       return `## ${siteName}${lp}${mode}${rp}\n\n${itemsText}`;
     })
     .join("\n\n---\n\n");
@@ -214,8 +214,8 @@ export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string,
         ? "This is the first full crawl. Please focus on the overall content landscape, historical context, and core themes of each site, rather than individual articles."
         : "This is an incremental update. Please focus on today's new content and assess its strategic significance in context."
       : isAnyFirstRun
-        ? "本次为首次全量抓取，请重点梳理各站点的内容格局、历史脉络与核心主题，而非仅关注单篇文章。"
-        : "本次为增量更新，请聚焦今日新增内容，并结合上下文判断其战略意义。";
+        ? "هذا أول زحف كامل. يُرجى التركيز على المشهد العام للمحتوى والسياق التاريخي والمواضيع الأساسية لكل موقع، بدلاً من المقالات الفردية."
+        : "هذا تحديث تزايدي. يُرجى التركيز على المحتوى الجديد لليوماتقييم أهميته الاستراتيجية في السياق.";
 
   if (lang === "en") {
     return `You are a deep content analyst focused on AI, skilled at extracting strategic signals from official announcements, technical blogs, research papers, and product documentation.
@@ -252,44 +252,44 @@ ${isAnyFirstRun ? "6. **Content Landscape Overview** — First full crawl only: 
 `;
   }
 
-  return `你是一位专注于 AI 领域的深度内容分析师，擅长从官方公告、技术博客、研究论文和产品文档中提炼战略信号。
+  return `أنت محلّل محتوى متعمّق متخصّص في مجال الذكاء الاصطناعي، ماهر في استخلاص الإشارات الاستراتيجية من الإعلانات الرسمية والمدوّنات التقنية وأوراق البحث ووثائق المنتجات.
 
-以下是 ${dateStr} 从 Anthropic（claude.com / anthropic.com）和 OpenAI（openai.com）官网抓取的内容，${firstRunNote}
+فيما يلي محتوى تمّ جلبه بتاريخ ${dateStr} من موقعي Anthropic (claude.com / anthropic.com) و OpenAI (openai.com)، ${firstRunNote}
 
 ${siteSections}
 
 ---
 
-请生成一份详实的《AI 官方内容追踪报告》，包含以下部分：
+يُرجى إنشاء تقرير مفصّل لتتبّع المحتوى الرسمي للذكاء الاصطناعي، يضمّن الأقسام التالية:
 
-1. **今日速览** — 3~5 句话概括最重要的新发布或动向，点出核心亮点
+1. **أبرز ما في اليوم** — 3 إلى 5 جُمل تُلخّص أهم الإصدارات أو التطورات الجديدة، مع إبراز النقاط المحورية
 
-2. **Anthropic / Claude 内容精选** — 按分类（news / research / engineering / learn 等）逐条整理重要内容：
-   - 每篇用 2~4 句话提炼核心观点、技术细节或业务意义
-   - 标注发布日期和原文链接
-   - 如首次全量，按时间线梳理重要里程碑
+2. **أبرز محتوى Anthropic / Claude** — نَظّم المحتوى المهم حسب الفئة (news / research / engineering / learn، إلخ):
+   - لكل عنصر، استخلص في 2 إلى 4 جُمل الرؤى الأساسية والتفاصيل التقنية أو الأهمية التجارية
+   - أشر إلى تاريخ النشر والرابط الأصلي
+   - إذا كان أول زحف كامل، تتبّع المعالم المهمة زمنياً
 
-3. **OpenAI 内容精选** — 同上，按 research / release / company / safety 等分类整理
-   - ⚠️ 注意：OpenAI 数据为仅元数据模式（标题由 URL 路径推断，无正文）。请仅基于 URL 和分类进行客观列举，不要对标题含义进行推测性解读或编造内容摘要。如果信息不足以分析，直接说明数据受限即可。
+3. **أبرز محتوى OpenAI** — بنفس الهيكل، نَظّم حسب فئات research / release / company / safety
+   - ⚠️ ملاحظة: بيانات OpenAI هي بيانات وصفية فقط (العناوين مُستنتَجة من مسارات URL، لا يوجد نص للمقال). اذكُر الروابط والفئات بشكل موضوعي فقط. لا تتكهّن على معاني العناوين أو تختلق ملخّصات للمحتوى. إذا كانت المعلومات غير كافية للتحليل، اذكُر قيد البيانات بوضوح.
 
-4. **战略信号解读** — 基于两家公司的发布节奏和内容重点，分析：
-   - 各自近期的技术优先级（模型能力 / 安全 / 产品化 / 生态）
-   - 竞争态势：谁在引领议题，谁在跟进
-   - 对开发者和企业用户的潜在影响
+4. **قراءة الإشارات الاستراتيجية** — بناءً على وتيرة الإصدار وتركيز المحتوى لدى الشركتين، حلّل:
+   - أولويات كل شركة التقنية الأخيرة (قدرات النماذج / الأمان / التحويل إلى منتج / المنظومة)
+   - الديناميكيات التنافسية: من يضع جدول الأعمال، ومن يتابع
+   - الأثر المحتمل على المطورين والمستخدمين المؤسسيين
 
-5. **值得关注的细节** — 从标题、措辞、发布时机中提取隐含信号，例如：
-   - 新兴词汇或话题的首次出现
-   - 某类主题的密集发布（可能预示产品节点）
-   - 政策、合规、安全方面的动向
+5. **تفاصيل تستحق الانتباه** — استخلص الإشارات الخفية من العناوين والصياغة وتوقيت النشر، مثل:
+   - ظهور مصطلحات أو مواضيع جديدة لأول مرة
+   - كثافة الإصدارات في فئة معيّنة (قد تشير إلى مرحلة منتج)
+   - التطورات في السياسات والامتثال والأمان
 
-${isAnyFirstRun ? "6. **内容格局总览** — 首次全量独有：汇总两家公司各内容类别的数量分布，并说明各自的内容运营风格（学术导向 vs 产品导向 vs 用户故事等）\n\n" : ""}语言要求：中文，专业深入，内容详实，适合 AI 领域研究者、产品经理和技术决策者阅读。每个条目必须附上 GitHub/官网链接。
+${isAnyFirstRun ? "6. **نظرة عامة على مشهد المحتوى** — خاص بأول زحف كامل: لخّص التوزيع الفئوي للمحتوى لدى الشركتين وصِف أسلوب استراتيجية المحتوى لكل منهما (أكاديمي التوجّه مقابل موجّه نحو المنتج مقابل قصص المستخدمين، إلخ)\\n\\n" : ""}اللغة: العربية، احترافية ومفصّلة، تناسب الباحثين في مجال الذكاء الاصطناعي ومديري المنتجات وصنّاع القرار التقني. يجب تضمين الروابط الرسمية لكل عنصر.
 `;
 }
 
 export function buildWeeklyPrompt(
   dailyDigests: Record<string, string>,
   weekStr: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): string {
   const digestEntries = Object.entries(dailyDigests)
     .map(([date, content]) => `## ${date}\n\n${content}`)
@@ -316,30 +316,30 @@ Style: English, concise and professional, helping technical developers quickly g
 `;
   }
 
-  return `你是一位专注于 AI 开源生态的技术分析师。以下是过去 7 天（${weekStr}）的 AI 工具社区每日动态摘要，请生成本周综合回顾报告。
+  return `أنت محلّل تقني متخصّص في منظومة الذكاء الاصطناعي مفتوحة المصدر. فيما يلي ملخّصات يومية لنشاط مجتمع أدوات الذكاء الاصطناعي خلال الأيام السبعة الماضية (${weekStr})، يُرجى إنشاء تقرير مراجعة أسبوعي شامل.
 
 ${digestEntries}
 
 ---
 
-请生成《AI 工具生态周报》，包含以下部分：
+يُرجى إنشاء تقرير أسبوعي لمنظومة أدوات الذكاء الاصطناعي يضمّن الأقسام التالية:
 
-1. **本周要闻** - 5-8 条本周最重要的事件、版本发布、社区动向，每条附日期
-2. **CLI 工具进展** - 各 AI CLI 工具（Claude Code、Codex、Gemini CLI 等）本周整体动态与关键变化
-3. **AI Agent 生态** - OpenClaw 及同赛道项目的本周重要进展
-4. **开源趋势** - 本周 GitHub Trending 和 AI 社区最关注的技术方向
-5. **HN 社区热议** - 本周 Hacker News AI 讨论的核心话题与社区情绪
-6. **官方动态** - Anthropic 和 OpenAI 本周发布的重要内容（若有）
-7. **下周信号** - 基于本周数据，预判值得关注的趋势或即将到来的事件
+1. **أبرز أخبار الأسبوع** — 5 إلى 8 أهم الأحداث والإصدارات والتطورات المجتمعية هذا الأسبوع، مع تاريخ كل منها
+2. **تقدّم أدوات CLI** — النشاط العام والتغييرات الرئيسية لكل أداة CLI للذكاء الاصطناعي (Claude Code و Codex و Gemini CLI، إلخ)
+3. **منظومة وكلاء الذكاء الاصطناعي** — التطورات الرئيسية من OpenClaw والمشاريع المماثلة هذا الأسبوع
+4. **اتجاهات مفتوحة المصدر** — أبرز الاتجاهات التقنية من GitHub Trending ومجتمع الذكاء الاصطناعي هذا الأسبوع
+5. **أبرز ما جرى في مجتمع Hacker News** — المواضيع الأساسية للنقاش حول الذكاء الاصطناعي ومزاج المجتمع على Hacker News هذا الأسبوع
+6. **الإعلانات الرسمية** — المحتوى المهم الذي نشرته Anthropic و OpenAI هذا الأسبوع (إن وُجد)
+7. **إشارات الأسبوع القادم** — استناداً إلى بيانات هذا الأسبوع، توقّع الاتجاهات والأحداث القادمة التي تستحق المتابعة
 
-语言要求：中文，简洁专业，适合技术开发者快速掌握一周动态。
+اللغة: العربية، موجزة واحترافية، تساعد المطورين التقنيين على استيعاب تطورات الأسبوع بسرعة.
 `;
 }
 
 export function buildMonthlyPrompt(
   sourceDigests: Record<string, string>,
   monthStr: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): string {
   const digestEntries = Object.entries(sourceDigests)
     .map(([key, content]) => `## ${key}\n\n${content}`)
@@ -366,23 +366,23 @@ Style: English, in-depth analysis, data-driven, suited for monthly retrospective
 `;
   }
 
-  return `你是一位专注于 AI 开源生态的技术分析师。以下是 ${monthStr} 月的 AI 工具社区动态汇总（共 ${Object.keys(sourceDigests).length} 份报告），请生成本月综合回顾报告。
+  return `أنت محلّل تقني متخصّص في منظومة الذكاء الاصطناعي مفتوحة المصدر. فيما يلي ملخّصات مجتمع أدوات الذكاء الاصطناعي لشهر ${monthStr} (إجمالي ${Object.keys(sourceDigests).length} تقريراً)، يُرجى إنشاء تقرير المراجعة الشهري الشامل.
 
 ${digestEntries}
 
 ---
 
-请生成《AI 工具生态月报》，包含以下部分：
+يُرجى إنشاء تقرير شهري لمنظومة أدوات الذكاء الاصطناعي يضمّن الأقسام التالية:
 
-1. **月度要闻** - 本月最重要的 5-10 条事件和里程碑，按时间排列
-2. **CLI 工具月度进展** - 各主要 AI CLI 工具本月整体发展轨迹、重要版本、社区规模变化
-3. **AI Agent 生态月报** - 本月生态格局变化、新兴项目、值得关注的信号
-4. **技术趋势总结** - 本月 AI 开源领域最显著的技术方向与范式变化
-5. **社区生态健康度** - 各主要项目月度活跃度对比、开发者参与度评估
-6. **官方动态回顾** - Anthropic 和 OpenAI 本月发布内容的战略意义分析
-7. **下月展望** - 基于本月趋势，预判值得重点关注的方向和潜在事件
+1. **أبرز أخبار الشهر** — 5 إلى 10 أهم الأحداث والمعالم في هذا الشهر، مرتّبة زمنياً
+2. **التقدّم الشهري لأدوات CLI** — المسار العام للتطوير والإصدارات الرئيسية ونمو المجتمع لكل أداة CLI رئيسية للذكاء الاصطناعي
+3. **المراجعة الشهرية لمنظومة وكلاء الذكاء الاصطناعي** — تحوّلات مشهد المنظومة والمشاريع الناشئة والإشارات الجديرة بالاهتمام هذا الشهر
+4. **ملخّص الاتجاهات التقنية** — أبرز الاتجاهات التقنية وتحوّلات النموذج في مجال الذكاء الاصطناعي مفتوحة المصدر هذا الشهر
+5. **تقييم صحة المجتمع** — مقارنة النشاط الشهري عبر المشاريع الرئيسية وتقييم تفاعل المطورين
+6. **مراجعة الإعلانات الرسمية** — تحليل استراتيجي للمحتوى الذي نشرته Anthropic و OpenAI هذا الشهر
+7. **النظرة المستقبلية للشهر القادم** — استناداً إلى اتجاهات هذا الشهر، توقّع الاتجاهات الرئيسية والأحداث المحتملة للمتابعة
 
-语言要求：中文，深度分析，数据驱动，适合月度复盘和战略决策参考。
+اللغة: العربية، تحليل متعمّق، مدفوع بالبيانات، يناسب المراجعات الشهرية واتخاذ القرارات الاستراتيجية.
 `;
 }
 
@@ -397,7 +397,7 @@ export interface ReportHighlights {
 
 export function buildHighlightsPrompt(
   reportContents: Record<string, string>,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
   itemsPerReport: number = 6,
 ): string {
   const sections = Object.entries(reportContents)
@@ -424,27 +424,27 @@ Rules:
 - Be specific: include project names, version numbers, star counts where relevant`;
   }
 
-  return `你是一位简洁的新闻编辑。以下是今日 AI 生态各报告的摘要，每个报告用 ID 标注。
+  return `أنت محرّر أخبار موجز. فيما يلي مقتطفات تقارير منظومة الذكاء الاصطناعي لهذا اليوم، لكل تقرير معرّف مُحدّد.
 
 ${sections}
 
 ---
 
-为每份报告提取 ${itemsPerReport} 条最值得关注的亮点——能让读者产生点击欲望的那种。每条亮点用一句简短的话（不超过 30 个字）。
+لكل تقرير، استخرِج ${itemsPerReport} من أبرز النقاط الجديرة بالاهتمام — تلك التي تجعل القارئ راغباً في النقر للاطّلاع. كل نقطة يجب أن تكون جملة قصيرة واحدة (أقل من 60 حرفاً).
 
-只返回合法的 JSON，不要 markdown 代码块，不要解释。格式：
-{"ai-cli":["亮点1","亮点2",...],"ai-agents":["亮点1","亮点2",...],...}
+أعِد JSON صالحاً فقط، دون شبّيكات markdown ودون شرح. الصيغة:
+{"ai-cli":["نقطة 1","نقطة 2",...],"ai-agents":["نقطة 1","نقطة 2",...],...}
 
-规则：
-- 用上面方括号中的报告 ID 作为 key
-- 只包含有实际内容的报告（跳过失败或无活动的报告）
-- 每个报告 ${itemsPerReport} 条亮点，每条不超过 30 个字
-- 重点关注：新版本发布、重要特性、热门项目、关键讨论
-- 要具体：包含项目名、版本号、star 数等关键信息
-- 每条亮点必须用中文表述；即使原文（论文标题、模型名、讨论标题等）是英文，也要翻译成中文，仅项目名、模型名、产品名等专有名词可保留英文，不要直接照抄整句英文`;
+القواعد:
+- استخدم معرّفات التقارير المذكورة بين الأقواس المربعة أعلاه كمفاتيح
+- ضَمّن التقارير ذات المحتوى الجوهري فقط (تجاوز التقارير التي تحوي رسائل فشل أو لا نشاط فيها)
+- ${itemsPerReport} نقاط لكل تقرير، كل نقطة أقل من 60 حرفاً
+- ركّز على: الإصدارات الجديدة، الميزات المهمة، المشاريع الرائجة، النقاشات المحورية
+- كُن محدّداً: اذكُر أسماء المشاريع وأرقام الإصدارات وعدد الـ stars حيثما ورد ذكرها
+- كل نقطة يجب أن تُكتب بالعربية؛ حتى لو كان الأصل (عنوان ورقة، اسم نموذج، عنوان نقاش) بالإنجليزية، اترجم إلى العربية، ولا تُبقَ الإنجليزية سوى للأسماء العلمية كأسماء المشاريع والنماذج والمنتجات، ولا تنقل جُمل إنجليزية كاملة كما هي`;
 }
 
-export function buildHnPrompt(data: HnData, dateStr: string, lang: Lang = "zh"): string {
+export function buildHnPrompt(data: HnData, dateStr: string, lang: Lang = "ar"): string {
   const storiesText = data.stories
     .map((s, i) =>
       lang === "en"
@@ -453,9 +453,9 @@ export function buildHnPrompt(data: HnData, dateStr: string, lang: Lang = "zh"):
           `   Discussion: ${s.hnUrl}\n` +
           `   HN Rank: ${s.hnRank ?? i + 1} | Score: ${s.points} | Comments: ${s.comments} | Author: ${s.author} | Time: ${s.createdAt.slice(0, 16)}`
         : `${i + 1}. **${s.title}**\n` +
-          `   链接: ${s.url}\n` +
-          `   讨论: ${s.hnUrl}\n` +
-          `   HN 排名: ${s.hnRank ?? i + 1} | 分数: ${s.points} | 评论: ${s.comments} | 作者: ${s.author} | 时间: ${s.createdAt.slice(0, 16)}`,
+          `   الرابط: ${s.url}\n` +
+          `   النقاش: ${s.hnUrl}\n` +
+          `   ترتيب HN: ${s.hnRank ?? i + 1} | النقاط: ${s.points} | التعليقات: ${s.comments} | الكاتب: ${s.author} | الوقت: ${s.createdAt.slice(0, 16)}`,
     )
     .join("\n\n");
 
@@ -538,7 +538,7 @@ ${storiesText}
 `;
 }
 
-export function buildPhPrompt(data: PhData, dateStr: string, lang: Lang = "zh"): string {
+export function buildPhPrompt(data: PhData, dateStr: string, lang: Lang = "ar"): string {
   const productsText = data.products
     .map((p, i) =>
       lang === "en"
@@ -638,7 +638,7 @@ ${productsText}
 // ArXiv prompt
 // ---------------------------------------------------------------------------
 
-export function buildArxivPrompt(data: ArxivData, dateStr: string, lang: Lang = "zh"): string {
+export function buildArxivPrompt(data: ArxivData, dateStr: string, lang: Lang = "ar"): string {
   const papersText = data.papers
     .map((p, i) => {
       const authors =
@@ -735,7 +735,7 @@ ${papersText}
 // Hugging Face prompt
 // ---------------------------------------------------------------------------
 
-export function buildHfPrompt(data: HfData, dateStr: string, lang: Lang = "zh"): string {
+export function buildHfPrompt(data: HfData, dateStr: string, lang: Lang = "ar"): string {
   const modelsText = data.models
     .map((m, i) =>
       lang === "en"
@@ -839,7 +839,7 @@ export function buildCommunityPrompt(
   devto: DevtoData,
   lobsters: LobstersData,
   dateStr: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): string {
   const devtoText =
     devto.articles.length > 0

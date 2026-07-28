@@ -69,7 +69,7 @@ describe("buildFeishuMessage", () => {
 
   it("includes highlights when provided", () => {
     const highlights: Highlights = {
-      zh: {
+      ar: {
         "ai-cli": ["Claude Code 发布 v1.2.0", "Gemini CLI 修复 streaming"],
         "ai-agents": ["OpenClaw 新增 MCP 支持"],
       },

@@ -43,11 +43,11 @@ describe("bilingual string maps", () => {
 
   for (const { name, obj } of maps) {
     it(`${name} has both zh and en`, () => {
-      expect(obj).toHaveProperty("zh");
+      expect(obj).toHaveProperty("ar");
       expect(obj).toHaveProperty("en");
-      expect(obj.zh).toBeTruthy();
+      expect(obj.ar).toBeTruthy();
       expect(obj.en).toBeTruthy();
-      expect(obj.zh).not.toBe(obj.en);
+      expect(obj.ar).not.toBe(obj.en);
     });
   }
 });
@@ -58,29 +58,29 @@ describe("bilingual string maps", () => {
 
 describe("issue title functions", () => {
   it("CLI_ISSUE_TITLE produces zh and en titles", () => {
-    expect(CLI_ISSUE_TITLE("2026-03-12", "zh")).toContain("AI CLI");
-    expect(CLI_ISSUE_TITLE("2026-03-12", "zh")).toContain("2026-03-12");
+    expect(CLI_ISSUE_TITLE("2026-03-12", "ar")).toContain("AI CLI");
+    expect(CLI_ISSUE_TITLE("2026-03-12", "ar")).toContain("2026-03-12");
     expect(CLI_ISSUE_TITLE("2026-03-12", "en")).toContain("AI CLI Tools Digest");
   });
 
   it("OPENCLAW_ISSUE_TITLE produces zh and en titles", () => {
-    expect(OPENCLAW_ISSUE_TITLE("2026-03-12", "zh")).toContain("OpenClaw");
+    expect(OPENCLAW_ISSUE_TITLE("2026-03-12", "ar")).toContain("OpenClaw");
     expect(OPENCLAW_ISSUE_TITLE("2026-03-12", "en")).toContain("OpenClaw Ecosystem Digest");
   });
 
   it("WEB_REPORT.issueTitle includes first crawl flag", () => {
-    expect(WEB_REPORT.issueTitle("2026-03-12", true, "zh")).toContain("首次全量");
-    expect(WEB_REPORT.issueTitle("2026-03-12", false, "zh")).not.toContain("首次全量");
+    expect(WEB_REPORT.issueTitle("2026-03-12", true, "ar")).toContain("首次全量");
+    expect(WEB_REPORT.issueTitle("2026-03-12", false, "ar")).not.toContain("首次全量");
     expect(WEB_REPORT.issueTitle("2026-03-12", true, "en")).toContain("First Crawl");
   });
 
   it("TRENDING_REPORT.issueTitle produces zh and en", () => {
-    expect(TRENDING_REPORT.issueTitle("2026-03-12", "zh")).toContain("开源趋势");
+    expect(TRENDING_REPORT.issueTitle("2026-03-12", "ar")).toContain("开源趋势");
     expect(TRENDING_REPORT.issueTitle("2026-03-12", "en")).toContain("Open Source Trends");
   });
 
   it("HN_REPORT.issueTitle produces zh and en", () => {
-    expect(HN_REPORT.issueTitle("2026-03-12", "zh")).toContain("Hacker News");
+    expect(HN_REPORT.issueTitle("2026-03-12", "ar")).toContain("Hacker News");
     expect(HN_REPORT.issueTitle("2026-03-12", "en")).toContain("Hacker News");
   });
 
@@ -99,7 +99,7 @@ describe("issue title functions", () => {
 
 describe("dynamic content helpers", () => {
   it("CLI_REPORT.meta produces zh and en metadata", () => {
-    const zh = CLI_REPORT.meta("12:00", 5, "zh");
+    const zh = CLI_REPORT.meta("12:00", 5, "ar");
     expect(zh).toContain("12:00");
     expect(zh).toContain("5 个");
 
@@ -109,12 +109,12 @@ describe("dynamic content helpers", () => {
   });
 
   it("WEB_REPORT.newContent formats count", () => {
-    expect(WEB_REPORT.newContent(10, "zh")).toContain("10 篇");
+    expect(WEB_REPORT.newContent(10, "ar")).toContain("10 篇");
     expect(WEB_REPORT.newContent(10, "en")).toContain("10 articles");
   });
 
   it("WEB_REPORT.generated formats timestamp", () => {
-    expect(WEB_REPORT.generated("12:00", "zh")).toContain("12:00 UTC");
+    expect(WEB_REPORT.generated("12:00", "ar")).toContain("12:00 UTC");
     expect(WEB_REPORT.generated("12:00", "en")).toContain("12:00 UTC");
   });
 });
@@ -125,9 +125,9 @@ describe("dynamic content helpers", () => {
 
 describe("ISSUE_LABELS", () => {
   it("maps report types to label names", () => {
-    expect(ISSUE_LABELS.cli.zh).toBe("digest");
+    expect(ISSUE_LABELS.cli.ar).toBe("digest");
     expect(ISSUE_LABELS.cli.en).toBe("digest-en");
-    expect(ISSUE_LABELS.openclaw.zh).toBe("openclaw");
+    expect(ISSUE_LABELS.openclaw.ar).toBe("openclaw");
     expect(ISSUE_LABELS.trending.en).toBe("trending-en");
     expect(ISSUE_LABELS.hn.en).toBe("hn-en");
   });
@@ -142,7 +142,7 @@ describe("NOTIFY_LABELS", () => {
     const expected = ["ai-cli", "ai-agents", "ai-web", "ai-trending", "ai-hn", "ai-weekly", "ai-monthly"];
     for (const key of expected) {
       expect(NOTIFY_LABELS[key]).toBeDefined();
-      expect(NOTIFY_LABELS[key]!.zh).toBeTruthy();
+      expect(NOTIFY_LABELS[key]!.ar).toBeTruthy();
       expect(NOTIFY_LABELS[key]!.en).toBeTruthy();
     }
   });

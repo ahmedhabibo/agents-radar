@@ -36,7 +36,7 @@ describe("buildCliReportContent", () => {
       "2026-03-09",
       "\n---\nfooter",
       "anthropics/skills",
-      "zh",
+      "ar",
     );
 
     expect(result).toContain("# AI CLI 工具社区动态日报 2026-03-09");
@@ -78,7 +78,7 @@ describe("buildCliReportContent", () => {
       "",
       "",
       "anthropics/skills",
-      "zh",
+      "ar",
     );
 
     // Skills should appear inside claude-code details
@@ -116,7 +116,7 @@ describe("buildOpenclawReportContent", () => {
       "\nfooter",
       openclaw,
       peers,
-      "zh",
+      "ar",
     );
 
     expect(result).toContain("# OpenClaw 生态日报 2026-03-09");

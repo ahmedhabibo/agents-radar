@@ -77,11 +77,11 @@ export function buildFeishuMessage(
     ...baseReports.filter((r) => r.includes("weekly") || r.includes("monthly")),
   ];
 
-  const zhHighlights = highlights?.zh ?? {};
+  const zhHighlights = highlights?.ar ?? {};
   const enHighlights = highlights?.en ?? {};
 
   for (const r of ordered) {
-    const zhLabel = NOTIFY_LABELS[r]?.zh ?? r;
+    const zhLabel = NOTIFY_LABELS[r]?.ar ?? r;
     const zhUrl = `${PAGES_URL}/#${date}/${r}`;
     const enKey = `${r}-en`;
 

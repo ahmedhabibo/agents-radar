@@ -21,7 +21,7 @@ export interface RepoDigest {
 // Formatting
 // ---------------------------------------------------------------------------
 
-export function formatItem(item: GitHubItem, lang: Lang = "zh"): string {
+export function formatItem(item: GitHubItem, lang: Lang = "ar"): string {
   const labels = item.labels.map((l) => l.name).join(", ");
   const labelStr = labels ? ` [${labels}]` : "";
   const body = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);
@@ -36,7 +36,7 @@ export function formatItem(item: GitHubItem, lang: Lang = "zh"): string {
           url: "URL",
           summary: "Summary",
         }
-      : { author: "作者", created: "创建", updated: "更新", comments: "评论", url: "链接", summary: "摘要" };
+      : { author: "المؤلف", created: "تاريخ الإنشاء", updated: "تاريخ التحديث", comments: "التعليقات", url: "الرابط", summary: "الملخص" };
   // Extract "owner/repo" from html_url to avoid full GitHub URLs that trigger cross-references
   const repoSlug = item.html_url.replace(/^https:\/\/github\.com\//, "").replace(/\/(issues|pull)\/\d+$/, "");
   const itemKind = item.html_url.includes("/pull/") ? "PR" : "Issue";
@@ -61,13 +61,13 @@ export function topN(items: GitHubItem[], n: number): GitHubItem[] {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
 }
 
-export function sampleNote(total: number, sampled: number, lang: Lang = "zh"): string {
+export function sampleNote(total: number, sampled: number, lang: Lang = "ar"): string {
   if (lang === "en") {
     return total > sampled
       ? `(Total: ${total} items; showing top ${sampled} by comment count)`
       : `(Total: ${total} items)`;
   }
-  return total > sampled ? `（共 ${total} 条，以下展示评论数最多的 ${sampled} 条）` : `（共 ${total} 条）`;
+  return total > sampled ? `(إجمالي ${total} عنصر؛ يعرض ${sampled} الأكثر تعليقاً)` : `(إجمالي ${total} عنصر)`;
 }
 
 // ---------------------------------------------------------------------------
@@ -80,19 +80,19 @@ export function buildCliPrompt(
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): string {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
   const sampledPrs = topN(prs, CLI_PR_LIMIT);
 
   const issuesText =
-    sampledIssues.map((i) => formatItem(i, lang)).join("\n") || (lang === "en" ? "None" : "无");
-  const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || (lang === "en" ? "None" : "无");
+    sampledIssues.map((i) => formatItem(i, lang)).join("\n") || (lang === "en" ? "None" : "لا يوجد");
+  const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || (lang === "en" ? "None" : "لا يوجد");
   const releasesText = releases.length
     ? releases.map((r) => `- ${r.tag_name}: ${r.name}\n  ${(r.body ?? "").slice(0, 300)}`).join("\n")
     : lang === "en"
       ? "None"
-      : "无";
+      : "لا يوجد";
 
   const issueNote = sampleNote(issues.length, sampledIssues.length, lang);
   const prNote = sampleNote(prs.length, sampledPrs.length, lang);
@@ -126,31 +126,31 @@ Style: concise and professional, suited for technical developers. Include GitHub
 `;
   }
 
-  return `你是一位专注于 AI 开发工具的技术分析师。请根据以下 GitHub 数据，生成 ${dateStr} 的 ${cfg.name} 社区动态日报。
+  return `أنت محلل تقني متخصص في أدوات تطوير الذكاء الاصطناعي. يرجى إنشاء تقرير مجتمعي يومي لـ ${dateStr} حول ${cfg.name} استناداً إلى بيانات GitHub التالية.
 
-# 数据来源: github.com/${cfg.repo}
+# مصدر البيانات: github.com/${cfg.repo}
 
-## 最新 Releases（过去24小时）
+## أحدث الإصدارات (آخر 24 ساعة)
 ${releasesText}
 
-## 最新 Issues（过去24小时内更新）${issueNote}
+## أحدث الـ Issues (تم التحديث خلال آخر 24 ساعة) ${issueNote}
 ${issuesText}
 
-## 最新 Pull Requests（过去24小时内更新）${prNote}
+## أحدث Pull Requests (تم التحديث خلال آخر 24 ساعة) ${prNote}
 ${prsText}
 
 ---
 
-请生成一份结构清晰的中文日报，包含以下部分：
+يرجى إنشاء تقرير يومي منظم باللغة العربية يتضمن الأقسام التالية:
 
-1. **今日速览** - 用2-3句话概括今天最重要的动态
-2. **版本发布** - 如有新版本，总结更新内容；无则省略
-3. **社区热点 Issues** - 挑选 10 个最值得关注的 Issue，说明为什么重要、社区反应如何
-4. **重要 PR 进展** - 挑选 10 个重要的 PR，说明功能或修复内容
-5. **功能需求趋势** - 从所有 Issues 中提炼出社区最关注的功能方向（如 IDE 集成、性能、新模型支持等）
-6. **开发者关注点** - 总结开发者反馈中的痛点或高频需求
+1. **أبرز أحداث اليوم** - 2-3 جمل تلخص أهم المستجدات
+2. **الإصدارات** - إذا كانت هناك إصدارات جديدة، لخص محتوى التحديثات؛ وإلا فاحذف هذا القسم
+3. **أبرز Issues المجتمعية** - اختر 10 Issues جديرة بالاهتمام، واشرح أهميتها وردود فعل المجتمع
+4. **أهم تطورات PR** - اختر 10 PRs مهمة، واشرح الميزات أو الإصلاحات
+5. **توجهات طلبات الميزات** - استخلص أهم توجهات الميزات التي يركز عليها المجتمع (مثل دمج IDE، الأداء، دعم نماذج جديدة)
+6. **نقاط اختناق المطورين** - لخص نقاط الضعف المتكررة أو المطالب عالية التكرار من ملاحظات المطورين
 
-语言要求：简洁专业，适合技术开发者阅读。每个条目附上 GitHub 链接。
+متطلبات الأسلوب: موجز ومهني، مناسب للمطورين التقنيين. أرفق رابط GitHub مع كل بند.
 `;
 }
 
@@ -160,12 +160,12 @@ const PEER_PR_LIMIT = 20;
 export function buildPeerPrompt(
   cfg: RepoConfig,
   issues: GitHubItem[],
-  prs: GitHubItem[],
+    prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): string {
   const totalIssues = issues.length;
   const totalPrs = prs.length;
@@ -173,7 +173,7 @@ export function buildPeerPrompt(
   const sampledIssues = topN(issues, issueLimit);
   const sampledPrs = topN(prs, prLimit);
 
-  const noneStr = lang === "en" ? "None" : "无";
+  const noneStr = lang === "en" ? "None" : "لا يوجد";
   const issuesText = sampledIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
   const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
   const releasesText = releases.length
@@ -222,36 +222,36 @@ Style: objective, data-driven, highlighting project health. Include GitHub links
 `;
   }
 
-  return `你是一位 AI 智能体与个人 AI 助手领域开源项目分析师。请根据以下来自 ${cfg.name} (github.com/${cfg.repo}) 的 GitHub 数据，生成 ${dateStr} 的项目动态日报。
+  return `أنت محلل مشاريع مفتوحة المصدر في مجال وكلاء الذكاء الاصطناعي والمساعدين الشخصيين. يرجى إنشاء تقرير ديناميكيات مشروع ${dateStr} استناداً إلى بيانات GitHub من ${cfg.name} (github.com/${cfg.repo}).
 
-# 数据概览
-- 过去24小时 Issues 更新：${totalIssues} 条（新开/活跃: ${openIssues}，已关闭: ${closedIssues}）
-- 过去24小时 PR 更新：${totalPrs} 条（待合并: ${openPrs}，已合并/关闭: ${mergedPrs}）
-- 新版本发布：${releases.length} 个
+# نظرة عامة على البيانات
+- تحديثات الـ Issues خلال آخر 24 ساعة: ${totalIssues} عنصر (مفتوح/نشط: ${openIssues}، مغلق: ${closedIssues})
+- تحديثات الـ PR خلال آخر 24 ساعة: ${totalPrs} عنصر (بانتظار الدمج: ${openPrs}، مدمج/مغلق: ${mergedPrs})
+- إصدارات جديدة: ${releases.length}
 
-## 最新 Releases
+## أحدث الإصدارات
 ${releasesText}
 
-## 最新 Issues ${issueSampleNote}
+## أحدث الـ Issues ${issueSampleNote}
 ${issuesText}
 
-## 最新 Pull Requests ${prSampleNote}
+## أحدث Pull Requests ${prSampleNote}
 ${prsText}
 
 ---
 
-请生成一份结构清晰的 ${cfg.name} 项目日报，包含以下部分：
+يرجى إنشاء تقرير يومي منظم لمشروع ${cfg.name} يتضمن الأقسام التالية:
 
-1. **今日速览** - 用3-5句话概括项目今日整体状态，包括活跃度评估
-2. **版本发布** - 如有新版本，详细说明更新内容、破坏性变更、迁移注意事项；无则省略
-3. **项目进展** - 今日合并/关闭的重要 PR，说明推进了哪些功能或修复，项目整体向前迈进了多少
-4. **社区热点** - 今日讨论最活跃、评论最多、反应最多的 Issues/PRs（附链接），分析背后的诉求
-5. **Bug 与稳定性** - 今日报告的 Bug、崩溃、回归问题，按严重程度排列，标注是否已有 fix PR
-6. **功能请求与路线图信号** - 用户提出的新功能需求，结合已有 PR 判断哪些可能被纳入下一版本
-7. **用户反馈摘要** - 从 Issues 评论中提炼真实用户痛点、使用场景、满意/不满意的地方
-8. **待处理积压** - 长期未响应的重要 Issue 或 PR，提醒维护者关注
+1. **نظرة عامة اليوم** - 3-5 جمل تصف الحالة العامة للمشروع اليوم، بما في ذلك تقييم النشاط
+2. **الإصدارات** - إذا كانت هناك إصدارات جديدة، اشرح بالتفصيل محتوى التحديثات والتغييرات الجذرية وملاحظات الترحيل؛ وإلا فاحذف هذا القسم
+3. **تقدم المشروع** - أهم PRs المدمجة/المغلقة اليوم، وما الميزات التي تم تطويرها أو إصلاحها، ومدى تقدم المشروع
+4. **المواضيعة الساخنة في المجتمع** - أكثر الـ Issues وPRs نشاطاً بالتعليقات والتفاعلات اليوم (مع روابط)، وحلل الدوافع الكامنة
+5. **الأخطاء والاستقرار** - الأخطاء والانهيارات ومشاكل التراجع المبلغ عنها اليوم، مرتبة حسب الخطورة، مع الإشارة إلى وجود PR إصلاحي
+6. **طلبات الميزات وإشارات خريطة الطريق** - الميزات الجديدة التي اقترحها المستخدمون، مع توقع أيها قد يدخل الإصدار التالي بناءً على PRs القائمة
+7. **ملخص ملاحظات المستخدمين** - استخلص نقاط الضعف الحقيقية، سيناريوهات الاستخدام، ومستوى الرضا/عدم الرضا من تعليقات الـ Issues
+8. **متابعة الأعمال المتراكمة** - Issues أو PRs مهمة لم يتم الرد عليها منذ فترة طويلة، لتنبيه المشرفين
 
-语言要求：客观专业，数据驱动，突出项目健康度。每个条目附上 GitHub 链接。
+متطلبات الأسلوب: موضوعي ومهني، قائم على البيانات، مع إبراز صحة المشروع. أرفق رابط GitHub مع كل بند.
 `;
 }
 
@@ -259,14 +259,14 @@ export function buildPeersComparisonPrompt(
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): string {
-  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
+  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "لا يوجد نشاط خلال آخر 24 ساعة.";
 
   const openclawSection =
     lang === "en"
       ? `## OpenClaw (core reference, github.com/${openclawDigest.config.repo})\n${openclawDigest.summary}`
-      : `## OpenClaw（核心参照，github.com/${openclawDigest.config.repo}）\n${openclawDigest.summary}`;
+      : `## OpenClaw (مرجع أساسي، github.com/${openclawDigest.config.repo})\n${openclawDigest.summary}`;
 
   const peerSections = peerDigests
     .map((d) => {
@@ -301,7 +301,7 @@ Style: concise and professional, data-backed, suited for technical decision-make
 `;
   }
 
-  return `你是一位专注于 AI 智能体与个人 AI 助手开源生态的资深技术分析师。以下是 ${dateStr} 各开源项目的社区动态摘要。
+  return `أنت محلل تقني متمرس في النظام البيئي مفتوح المصدر لوكلاء الذكاء الاصطناعي والمساعدين الشخصيين. فيما يلي ملخصات المجتمع الديناميكي لكل مشروع مفتوح المصدر بتاريخ ${dateStr}.
 
 ${openclawSection}
 
@@ -311,17 +311,17 @@ ${peerSections}
 
 ---
 
-请基于上述各项目的动态，生成一份横向对比分析报告，包含以下部分：
+يرجى إنشاء تقرير تحليل مقارن أفقي يتضمن الأقسام التالية بناءً على بيانات المشاريع أعلاه:
 
-1. **生态全景** - 用3-5句话概括个人 AI 助手/自主智能体开源生态整体态势
-2. **各项目活跃度对比** - 以表格形式汇总各项目今日的 Issues 数、PR 数、Release 情况及健康度评估
-3. **OpenClaw 在生态中的定位** - 与同类相比的优势、技术路线差异、社区规模对比
-4. **共同关注的技术方向** - 多项目共同涌现的需求（注明涉及哪些项目、具体诉求）
-5. **差异化定位分析** - 功能侧重、目标用户、技术架构的关键差异
-6. **社区热度与成熟度** - 活跃度分层，哪些处于快速迭代阶段，哪些在质量巩固阶段
-7. **值得关注的趋势信号** - 从社区反馈中提炼行业趋势，对 AI 智能体开发者的参考价值
+1. **المشهد الكامل** - 3-5 جمل تصف الحالة العامة للنظام البيئي مفتوح المصدر للمساعدين الشخصيين ووكلاء الذكاء الاصطناعي
+2. **مقارنة النشاط عبر المشاريع** - جدول يلخص عدد الـ Issues وPRs والإصدارات و "Assessment الصحة لكل مشروع اليوم
+3. **موقع OpenClaw في النظام البيئي** - المزايا مقارنة بالمشابهين، اختلافات النهج التقني، مقارنة حجم المجتمع
+4. **مجالات التركيز التقني المشتركة** - احتياجات تظهر عبر مشاريع متعددة (حدد أي المشاريع المعنية والاحتياجات المحددة)
+5. **تحليل التمايز** - اختلافات رئيسية في تركيز الميزات، الجمهور المستهدف، والهندسة المعمارية التقنية
+6. **نشاط المجتمع ومستوى النضج** - تصنيف النشاط، أي المشاريع في مرحلة التطوير السرة وأيها في مرحلة التثبيت
+7. **إشارات جديرة بالاه** - توجهات صناعية مستخلصة من ملاحظات المجتمع، قيمة مرجعية لمطوري وكلاء الذكاء الاصطناعي
 
-语言要求：简洁专业，有数据支撑，适合技术决策者和开发者阅读。
+متطلبات الأسلوب: موجز ومهني، مدعوم بالبيانات، مناسب لصانع القرار التقني والمطورين.
 `;
 }
 
@@ -329,12 +329,12 @@ export function buildSkillsPrompt(
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
-  lang: Lang = "zh",
+  lang: Lang = "ar",
 ): string {
   const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);
 
-  const noneStr = lang === "en" ? "None" : "无";
+  const noneStr = lang === "en" ? "None" : "لا يوجد";
   const prsText = topPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
   const issuesText = topIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
 
@@ -363,32 +363,32 @@ Style: concise and professional, include GitHub links for each item.
 `;
   }
 
-  return `你是一位专注于 Claude Code 生态的技术分析师。以下是来自 github.com/anthropics/skills（Claude Code Skills 官方仓库）的数据，请分析社区最关注的 Skills 动态（数据截止 ${dateStr}）。
+  return `أنت محلل تقني متخصص في نظام Claude Code البيئي. فيما يلي بيانات من github.com/anthropics/skills (مستودع Claude Code Skills الرسمي)، يرجى تحليل أكثر مهارات المجتمع متابعة (حتى ${dateStr}).
 
-## 仓库说明
-anthropics/skills 是 Claude Code 官方 Skills 集合仓库，每个 PR 通常对应一个新增或改进的 Skill。社区通过 Issues 提出新 Skill 需求或反馈问题，PR 则代表实际提交的 Skill。
+## وصف المستودع
+anthropics/skills هو مستودع Skills الرسمي لـ Claude Code. كل PR يمثل عادةً Skill جديدة أو محسنة. يقترح المجتمع Skills جديدة ويبلغ عن المشاكل عبر Issues؛ وتمثل PRs مهارات ملموسة مقدم.
 
-## 热门 Pull Requests（按评论数排序，共 ${prs.length} 条，展示前 ${topPrs.length} 条）
+## Pull Requests الشائعة (مرتبة حسب عدد التعليقات، إجمالي ${prs.length} عنصر، تعرض أعلى ${topPrs.length})
 ${prsText}
 
-## 社区 Issues（按评论数排序，共 ${issues.length} 条，展示前 ${topIssues.length} 条）
+## Issues مجتمعية (مرتبة حسب عدد التعليقات، إجمالي ${issues.length} عنصر، يعرض أعلى ${topIssues.length})
 ${issuesText}
 
 ---
 
-请生成一份 Claude Code Skills 社区热点报告，包含以下部分：
+يرجى إنشاء تقرير ن¦قات ساخنة لمجتمع Claude Code Skills يتضمن الأقسام التالية:
 
-1. **热门 Skills 排行** - 列出评论/关注度最高的 5~8 个 Skills（PR），说明每个 Skill 的功能、社区讨论热点及当前状态（open/merged/draft）
-2. **社区需求趋势** - 从 Issues 中提炼社区最期待的新 Skill 方向（如工作流自动化、代码审查、测试生成、文档等）
-3. **高潜力待合并 Skills** - 评论活跃但尚未合并的 PR，这些 Skills 可能近期落地
-4. **Skills 生态洞察** - 一句话总结：当前社区在 Skills 层面最集中的诉求是什么
+1. **ترتيب أشهر Skills** - أدرج 5-8 مهارات Skills (PR) الأكثر مناقشة حسب التعليقات/الاهتمام، صف وظيفة كل Skill ونقاط  ساخنة في المناقشات وحالتها الحالية (open/merged/draft)
+2. **توجهات طلب المجتمع** - من الـ Issues، استخلص أكثر توجهات Skills الجديدة المتوقعة (مثل أتمتة سير العمل، مراجحة الكود، توليد الاختبارات، التوثيق)
+3. **Skills واعدة معلقة** - PRs نشطة التعليقات لم يتم دمجها بعد؛ قد تظهر هذه الـ Skills قريباً
+4. **رؤى نظام Skills البيئي** - ملخص بجملة واحدة: ما هو أكثر مطلب مركز للمجتمع على مستوى Skills؟
 
-语言要求：简洁专业，每个条目附上 GitHub 链接。
+متطلبات الأسلوب: موجز ومهني، كل بند مرفق برابط GitHub.
 `;
 }
 
-export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: Lang = "zh"): string {
-  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
+export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: Lang = "ar"): string {
+  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "لا يوجد نشاط خلال آخر 24 ساعة.";
 
   const sections = digests
     .map((d) => {
@@ -408,7 +408,7 @@ ${sections}
 Generate a cross-tool comparison report in English with these sections:
 
 1. **Ecosystem Overview** - 3-5 sentences on the overall AI CLI tools development landscape
-2. **Activity Comparison** - Table comparing Issues count, PR count, Release status for each tool today
+2. **Activity Comparison** - Table comparing word count, PR count, Release status for each tool today
 3. **Shared Feature Directions** - Requirements appearing across multiple tool communities (note which tools, specific needs)
 4. **Differentiation Analysis** - Differences in feature focus, target users, and technical approach
 5. **Community Momentum & Maturity** - Which tools have more active communities, which are rapidly iterating
@@ -418,21 +418,21 @@ Style: concise and professional, data-backed, suited for technical decision-make
 `;
   }
 
-  return `你是一位专注于 AI 开发工具生态的资深技术分析师。以下是 ${dateStr} 各主流 AI CLI 工具的社区动态摘要：
+  return `أنت محلل تقني كبير ممتع في النظام البيئي لأدوات تطوير الذكاء الاصطناعي. فيما يلي ${dateStr} ملخصات ديناميكية مجتمعية لأبرز أدوات AI CLI:
 
 ${sections}
 
 ---
 
-请基于上述各工具的动态，生成一份横向对比分析报告，包含以下部分：
+يرجى إنشاء تقرير مقارنة أفقي بين الأدوات يتضمن الأقسام التالية بناءً على البيانات أعلاه:
 
-1. **生态全景** - 用3-5句话概括当前 AI CLI 工具整体发展态势
-2. **各工具活跃度对比** - 以表格形式汇总各工具今日的 Issues 数、PR 数、Release 情况
-3. **共同关注的功能方向** - 多个工具社区都在关注的需求（说明哪些工具、具体诉求）
-4. **差异化定位分析** - 各工具在功能侧重、目标用户、技术路线上的差异
-5. **社区热度与成熟度** - 哪些工具社区更活跃，哪些处于快速迭代阶段
-6. **值得关注的趋势信号** - 从社区反馈中提炼出的行业趋势，对开发者有何参考价值
+1. **المشهد الكامل** - 3-5 جمل تلخص حالة تطور أدوات AI CLI بشكل عام
+2. **مقارنة النشاط عبر الأدوات** - جدول يلخص عدد الـ Issues وPRs وحالة الإصدارات لكل أداة اليوم
+3. **مجالات الميزات المشتركة** - احتياجات تظهر عبر مجتمعات أدوات متعددة (حدد أي الأدوات، الاحتياجات المحددة)
+4. **تحليل التموضع والتفريق** - اختلافات في تركيز الميزات، الجمهور المستهدف، والنهج التقني لكل أداة
+5. **نشاط المجتمع ومستوى النضج** - أي الأدوات لديها مجتمع أنشط، وأيها في مرحلة التكرار السريع
+6. **إشارات تستحق التبيان** - توجهات صناعية من ملاحظات المجتمع، ما هو المرجع المستفاد للمطورين
 
-语言要求：简洁专业，有数据支撑，适合技术决策者和开发者阅读。
+متطلبات الأسلوب: موجزة ومهنية، بدعم البيانات، تناسب كل من المطورين وصناع القرار التقنيين.
 `;
 }

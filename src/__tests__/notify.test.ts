@@ -66,7 +66,7 @@ describe("buildMessage", () => {
 
   it("includes highlights when provided", () => {
     const highlights: Highlights = {
-      zh: {
+      ar: {
         "ai-cli": ["Claude Code 发布 v1.2.0", "Gemini CLI 修复 streaming"],
         "ai-agents": ["OpenClaw 新增 MCP 支持"],
       },
@@ -89,7 +89,7 @@ describe("buildMessage", () => {
     // Mirrors the 2026-07-13 incident: zh generation failed, leaving zh empty
     // while en was populated. The message must still render bullets.
     const highlights: Highlights = {
-      zh: {},
+      ar: {},
       en: {
         "ai-cli": ["Claude Code releases v1.2.0"],
         "ai-agents": ["OpenClaw adds MCP support"],
@@ -107,7 +107,7 @@ describe("buildMessage", () => {
 
   it("prefers zh highlights over en when both present", () => {
     const highlights: Highlights = {
-      zh: { "ai-cli": ["Claude Code 发布 v1.2.0"] },
+      ar: { "ai-cli": ["Claude Code 发布 v1.2.0"] },
       en: { "ai-cli": ["Claude Code releases v1.2.0"] },
     };
     const msg = buildMessage("2026-03-09", ["ai-cli", "ai-cli-en"], BASE_URL, highlights);
