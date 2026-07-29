@@ -11,22 +11,22 @@
  *   search        — keyword search across recent reports
  */
 
-const PAGES_URL = "https://duanyytop.github.io/agents-radar";
+const PAGES_URL = "https://ahmedhabibo.github.io/agents-radar";
 
 const REPORT_LABELS: Record<string, string> = {
-  "ai-cli": "AI CLI Tools Digest (ZH)",
+  "ai-cli": "AI CLI Tools Digest (AR)",
   "ai-cli-en": "AI CLI Tools Digest (EN)",
-  "ai-agents": "AI Agents Ecosystem (ZH)",
+  "ai-agents": "AI Agents Ecosystem (AR)",
   "ai-agents-en": "AI Agents Ecosystem (EN)",
-  "ai-web": "Official AI Content (ZH)",
+  "ai-web": "Official AI Content (AR)",
   "ai-web-en": "Official AI Content (EN)",
-  "ai-trending": "GitHub AI Trends (ZH)",
+  "ai-trending": "GitHub AI Trends (AR)",
   "ai-trending-en": "GitHub AI Trends (EN)",
-  "ai-hn": "Hacker News AI Community (ZH)",
+  "ai-hn": "Hacker News AI Community (AR)",
   "ai-hn-en": "Hacker News AI Community (EN)",
-  "ai-weekly": "Weekly Rollup (ZH)",
+  "ai-weekly": "Weekly Rollup (AR)",
   "ai-weekly-en": "Weekly Rollup (EN)",
-  "ai-monthly": "Monthly Rollup (ZH)",
+  "ai-monthly": "Monthly Rollup (AR)",
   "ai-monthly-en": "Monthly Rollup (EN)",
 };
 
