@@ -25,7 +25,7 @@ function saveSocialFile(content: string, filename: string): string {
   return filepath;
 }
 
-// Reports to include as source material (zh only)
+// Reports to include as source material (ar only)
 const SOURCE_REPORTS = ["ai-cli", "ai-agents", "ai-web", "ai-trending", "ai-hn"];
 
 function getRecentDates(n: number): string[] {

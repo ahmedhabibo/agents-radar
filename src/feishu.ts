@@ -77,26 +77,26 @@ export function buildFeishuMessage(
     ...baseReports.filter((r) => r.includes("weekly") || r.includes("monthly")),
   ];
 
-  const zhHighlights = highlights?.ar ?? {};
+  const arHighlights = highlights?.ar ?? {};
   const enHighlights = highlights?.en ?? {};
 
   for (const r of ordered) {
-    const zhLabel = NOTIFY_LABELS[r]?.ar ?? r;
-    const zhUrl = `${PAGES_URL}/#${date}/${r}`;
+    const arLabel = NOTIFY_LABELS[r]?.ar ?? r;
+    const arUrl = `${PAGES_URL}/#${date}/${r}`;
     const enKey = `${r}-en`;
 
     lines.push("");
     if (reports.includes(enKey)) {
       const enLabel = NOTIFY_LABELS[r]?.en ?? "EN";
       const enUrl = `${PAGES_URL}/#${date}/${enKey}`;
-      lines.push(`• [${zhLabel}](${zhUrl})  ·  [${enLabel}](${enUrl})`);
+      lines.push(`• [${arLabel}](${arUrl})  ·  [${enLabel}](${enUrl})`);
     } else {
-      lines.push(`• [${zhLabel}](${zhUrl})`);
+      lines.push(`• [${arLabel}](${arUrl})`);
     }
 
     // Fall back to en when a report's zh highlights are missing so a
     // single-language failure never blanks the message.
-    const items = zhHighlights[r] ?? enHighlights[r];
+    const items = arHighlights[r] ?? enHighlights[r];
     if (items?.length) {
       for (const h of items) {
         lines.push(`  ◦ ${h}`);
